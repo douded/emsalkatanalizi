@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kat Analizi ve İndirgeme Programı v2.1</title>
+    <title>Kat Analizi ve İndirgeme Programı v2.2</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -97,6 +97,18 @@
             border-radius: 8px;
             margin-top: 20px;
         }
+
+        /* Yeni eklenen anlık sonuç stili */
+        .instant-result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none; /* Başlangıçta gizli */
+        }
         
         .record-item {
             border-left: 4px solid var(--primary);
@@ -124,16 +136,18 @@
             <div class="col">
                 <div class="form-group">
                     <label>İstenilen Fiyat (TL)</label>
-                    <input type="number" id="askingPrice" placeholder="Örn: 10000000">
+                    <input type="number" id="askingPrice" placeholder="Örn: 10000000" oninput="calculateInstantPrice()">
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label>Pazarlık Payı (%) - Opsiyonel</label>
-                    <input type="number" id="bargainMargin" placeholder="Boş bırakılırsa fiyat baz alınır">
+                    <input type="number" id="bargainMargin" placeholder="Boş bırakılırsa fiyat baz alınır" oninput="calculateInstantPrice()">
                 </div>
             </div>
         </div>
+
+        <div id="instantPriceDisplay" class="instant-result"></div>
 
         <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0;">
 
@@ -195,6 +209,36 @@
         updateFloorOptions(); // Başlangıç seçeneklerini oluştur
         loadRecords();
     });
+
+    // Anlık Fiyat Hesaplama Fonksiyonu (YENİ)
+    function calculateInstantPrice() {
+        const price = parseFloat(document.getElementById('askingPrice').value);
+        const marginInput = document.getElementById('bargainMargin').value;
+        const displayDiv = document.getElementById('instantPriceDisplay');
+
+        // Eğer fiyat girilmemişse gizle
+        if (isNaN(price)) {
+            displayDiv.style.display = 'none';
+            return;
+        }
+
+        let roundedPrice;
+        
+        // Pazarlık payı kontrolü
+        if (marginInput !== '' && !isNaN(parseFloat(marginInput))) {
+            let margin = parseFloat(marginInput);
+            let discountedPrice = price * (1 - (margin / 100));
+            // Pazarlık payı varsa yuvarlama yap
+            roundedPrice = Math.round(discountedPrice / 100000) * 100000;
+        } else {
+            // Pazarlık payı girilmediyse fiyatı olduğu gibi kullan
+            roundedPrice = price;
+        }
+
+        // Sonucu göster
+        displayDiv.innerHTML = `Hesaplanan Değer (Yuvarlanmış): ${TR_INT.format(roundedPrice)} TL`;
+        displayDiv.style.display = 'block';
+    }
 
     // Kat Seçeneklerini Dinamik Güncelleme Fonksiyonu
     function updateFloorOptions() {
@@ -271,10 +315,9 @@
         document.getElementById(`row-${id}`).remove();
     }
 
-    // Hesaplama (GÜNCELLENEN KISIM)
+    // Hesaplama (Kaydet butonu için)
     function performCalculation() {
         const price = parseFloat(document.getElementById('askingPrice').value);
-        // Değişiklik: Margin değerini string olarak alıyoruz (boş mu değil mi kontrolü için)
         const marginInput = document.getElementById('bargainMargin').value;
         const bCount = document.getElementById('basementCount').value;
         const nCount = document.getElementById('normalCount').value;
@@ -287,14 +330,11 @@
         let roundedPrice;
         let margin = 0;
         
-        // Pazarlık payı girilmişse (Boş değilse ve sayıysa)
         if (marginInput !== '' && !isNaN(parseFloat(marginInput))) {
             margin = parseFloat(marginInput);
             let discountedPrice = price * (1 - (margin / 100));
-            // Pazarlık payı varsa yuvarlama yap
             roundedPrice = Math.round(discountedPrice / 100000) * 100000;
         } else {
-            // Pazarlık payı girilmediyse fiyatı olduğu gibi kullan
             roundedPrice = price;
             margin = 0;
         }
@@ -339,7 +379,7 @@
             margin,
             bCount,
             nCount,
-            roundedPrice, // Bu artık ya yuvarlanmış değer ya da direkt fiyat
+            roundedPrice, 
             floorDetails,
             totalReducedArea,
             unitValue,
@@ -385,7 +425,6 @@
 
         let html = '';
         records.forEach(rec => {
-            // Eğer margin 0 ise listede "Pazarlık Yok" veya 0% gösterebiliriz, şu an %0 görünecek
             html += `
                 <div class="card record-item">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -431,9 +470,11 @@
         // Formu doldur
         document.getElementById('editId').value = rec.id;
         document.getElementById('askingPrice').value = rec.price;
-        // Eğer margin 0 ise boş bırak, değilse yaz (Kullanıcı 0 girmişse 0 yazar, boşsa boş kalır)
         document.getElementById('bargainMargin').value = rec.margin === 0 ? '' : rec.margin;
         
+        // Anlık sonucu tetikle
+        calculateInstantPrice();
+
         // Kat sayılarını geri yükle
         document.getElementById('basementCount').value = rec.bCount || 1;
         document.getElementById('normalCount').value = rec.nCount || 1;
@@ -462,11 +503,12 @@
         document.getElementById('editId').value = '';
         document.getElementById('askingPrice').value = '';
         document.getElementById('bargainMargin').value = '';
+        document.getElementById('instantPriceDisplay').style.display = 'none'; // Anlık sonucu gizle
         
         // Varsayılanlara dön
         document.getElementById('basementCount').value = '1';
         document.getElementById('normalCount').value = '1';
-        updateFloorOptions(); // Dropdown'ı resetle
+        updateFloorOptions(); 
 
         document.getElementById('floorSelector').value = '';
         document.getElementById('floorsContainer').innerHTML = '';
