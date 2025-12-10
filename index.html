@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kat Analizi ve İndirgeme Programı v2.1</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+            --danger: #dc2626;
+            --success: #16a34a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 { color: var(--secondary); margin-bottom: 15px; }
+        
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+
+        .row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .col { flex: 1; min-width: 200px; }
+
+        button {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+        
+        .btn-primary { background-color: var(--primary); color: white; width: 100%; font-size: 1.1rem; }
+        .btn-secondary { background-color: #64748b; color: white; }
+        .btn-danger { background-color: var(--danger); color: white; padding: 5px 10px; font-size: 0.8rem; }
+        .btn-edit { background-color: var(--primary); color: white; padding: 5px 10px; font-size: 0.8rem; margin-right: 5px; }
+        
+        .floor-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .floor-row h4 { margin: 0 0 5px 0; grid-column: 1 / -1; font-size: 0.9rem; color: var(--secondary); }
+
+        @media (max-width: 600px) {
+            .floor-row { grid-template-columns: 1fr; }
+            .btn-danger { width: 100%; margin-top: 5px; }
+        }
+
+        .result-box {
+            background-color: #ecfdf5;
+            border: 1px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .record-item {
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+            margin-bottom: 15px;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+        
+        .record-actions { margin-top: 10px; text-align: right; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏗️ Kat Analizi Programı</h1>
+
+    <div class="card" id="inputForm">
+        <h3>Yeni Analiz Oluştur</h3>
+        <input type="hidden" id="editId">
+        
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>İstenilen Fiyat (TL)</label>
+                    <input type="number" id="askingPrice" placeholder="Örn: 10000000">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Pazarlık Payı (%) - Opsiyonel</label>
+                    <input type="number" id="bargainMargin" placeholder="Boş bırakılırsa fiyat baz alınır">
+                </div>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+
+        <h4 style="color: var(--text);">Bina Kat Yapılandırması</h4>
+        <div class="row" style="background: #eff6ff; padding: 15px; border-radius: 8px; border: 1px solid #bfdbfe;">
+            <div class="col">
+                <div class="form-group">
+                    <label>Bodrum Kat Sayısı</label>
+                    <input type="number" id="basementCount" value="1" min="0" onchange="updateFloorOptions()" oninput="updateFloorOptions()">
+                    <small style="color:#666; font-size:0.8em">Kaç adet bodrum kat var?</small>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Normal Kat Sayısı</label>
+                    <input type="number" id="normalCount" value="1" min="1" onchange="updateFloorOptions()" oninput="updateFloorOptions()">
+                    <small style="color:#666; font-size:0.8em">Kaç adet normal kat var?</small>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+            <label>Listeye Kat Ekle (Hesaplamaya Dahil Et):</label>
+            <div style="display: flex; gap: 10px;">
+                <select id="floorSelector">
+                    </select>
+                <button type="button" class="btn-secondary" onclick="addFloorRow()" style="width: auto; white-space: nowrap;">+ Ekle</button>
+            </div>
+        </div>
+
+        <div id="floorsContainer">
+            </div>
+
+        <div id="calculationResult" class="result-box" style="display:none;"></div>
+
+        <div style="margin-top: 20px;">
+            <button type="button" class="btn-primary" onclick="saveRecord()">Kaydet ve Listeye Ekle</button>
+            <button type="button" class="btn-secondary" onclick="clearForm()" style="margin-top: 10px; width: 100%; background-color: #ef4444;">Formu Temizle / İptal</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Kaydedilen Analizler</h3>
+        <div id="recordsList">
+            <p style="color: #6b7280; text-align: center;">Henüz kayıtlı analiz yok.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global değişkenler
+    const TR_FORMAT = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const TR_INT = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 });
+
+    // Sayfa yüklendiğinde
+    document.addEventListener('DOMContentLoaded', () => {
+        updateFloorOptions(); // Başlangıç seçeneklerini oluştur
+        loadRecords();
+    });
+
+    // Kat Seçeneklerini Dinamik Güncelleme Fonksiyonu
+    function updateFloorOptions() {
+        const basementCount = parseInt(document.getElementById('basementCount').value) || 0;
+        const normalCount = parseInt(document.getElementById('normalCount').value) || 1;
+        const selector = document.getElementById('floorSelector');
+        
+        // Listeyi temizle
+        selector.innerHTML = '<option value="" disabled selected>Kat Seçiniz...</option>';
+
+        // Bodrum Katları Ekle (Ters sıralama daha mantıklı: 3. Bodrum -> 1. Bodrum)
+        for (let i = basementCount; i >= 1; i--) {
+            let val = `${i}.Bodrum Kat`;
+            let option = document.createElement("option");
+            option.value = val;
+            option.text = val;
+            selector.add(option);
+        }
+
+        // Sabit Katlar
+        selector.add(new Option("Zemin Kat", "Zemin Kat"));
+        selector.add(new Option("Asma Kat", "Asma Kat"));
+
+        // Normal Katları Ekle (1. Normal -> N. Normal)
+        for (let i = 1; i <= normalCount; i++) {
+            let val = `${i}.Normal Kat`;
+            let option = document.createElement("option");
+            option.value = val;
+            option.text = val;
+            selector.add(option);
+        }
+
+        // Çatı Katı (Sabit)
+        selector.add(new Option("Çatı Kat", "Çatı Kat"));
+    }
+
+    // Listeye yeni kat satırı ekleme
+    function addFloorRow(floorName = null, area = '', ratio = '') {
+        const selector = document.getElementById('floorSelector');
+        const selectedFloor = floorName || selector.value;
+
+        if (!selectedFloor) {
+            alert("Lütfen önce listeden bir kat seçiniz.");
+            return;
+        }
+
+        const container = document.getElementById('floorsContainer');
+        const rowId = Date.now() + Math.random(); 
+
+        const div = document.createElement('div');
+        div.className = 'floor-row';
+        div.id = `row-${rowId}`;
+        div.dataset.floorName = selectedFloor;
+
+        div.innerHTML = `
+            <div><strong>${selectedFloor}</strong></div>
+            <div>
+                <input type="number" class="floor-area" placeholder="Alan (m²)" value="${area}">
+            </div>
+            <div>
+                <input type="number" class="floor-ratio" placeholder="İnd. Oranı" value="${ratio}">
+            </div>
+            <div>
+                <button type="button" class="btn-danger" onclick="removeFloorRow('${rowId}')">Sil</button>
+            </div>
+        `;
+
+        container.appendChild(div);
+        
+        if(!floorName) selector.value = ""; // Manuel eklemede seçimi sıfırla
+    }
+
+    function removeFloorRow(id) {
+        document.getElementById(`row-${id}`).remove();
+    }
+
+    // Hesaplama (GÜNCELLENEN KISIM)
+    function performCalculation() {
+        const price = parseFloat(document.getElementById('askingPrice').value);
+        // Değişiklik: Margin değerini string olarak alıyoruz (boş mu değil mi kontrolü için)
+        const marginInput = document.getElementById('bargainMargin').value;
+        const bCount = document.getElementById('basementCount').value;
+        const nCount = document.getElementById('normalCount').value;
+        
+        if (isNaN(price)) {
+            alert("Lütfen İstenilen Fiyat bilgisini giriniz.");
+            return null;
+        }
+
+        let roundedPrice;
+        let margin = 0;
+        
+        // Pazarlık payı girilmişse (Boş değilse ve sayıysa)
+        if (marginInput !== '' && !isNaN(parseFloat(marginInput))) {
+            margin = parseFloat(marginInput);
+            let discountedPrice = price * (1 - (margin / 100));
+            // Pazarlık payı varsa yuvarlama yap
+            roundedPrice = Math.round(discountedPrice / 100000) * 100000;
+        } else {
+            // Pazarlık payı girilmediyse fiyatı olduğu gibi kullan
+            roundedPrice = price;
+            margin = 0;
+        }
+
+        const rows = document.querySelectorAll('.floor-row');
+        if (rows.length === 0) {
+            alert("Lütfen en az bir kat ekleyiniz.");
+            return null;
+        }
+
+        let totalReducedArea = 0;
+        let floorDetails = [];
+
+        for (let row of rows) {
+            let name = row.dataset.floorName;
+            let area = parseFloat(row.querySelector('.floor-area').value);
+            let ratio = parseFloat(row.querySelector('.floor-ratio').value);
+
+            if (isNaN(area) || isNaN(ratio) || ratio <= 0) {
+                alert(`${name} için geçerli alan ve indirgeme oranı giriniz.`);
+                return null;
+            }
+
+            let reducedArea = area / ratio;
+            totalReducedArea += reducedArea;
+
+            floorDetails.push({
+                name: name,
+                area: area,
+                ratio: ratio,
+                reduced: reducedArea
+            });
+        }
+
+        let unitValue = 0;
+        if (totalReducedArea > 0) {
+            unitValue = roundedPrice / totalReducedArea;
+        }
+
+        return {
+            price,
+            margin,
+            bCount,
+            nCount,
+            roundedPrice, // Bu artık ya yuvarlanmış değer ya da direkt fiyat
+            floorDetails,
+            totalReducedArea,
+            unitValue,
+            date: new Date().toLocaleString('tr-TR')
+        };
+    }
+
+    // Kaydetme
+    function saveRecord() {
+        const result = performCalculation();
+        if (!result) return;
+
+        let records = JSON.parse(localStorage.getItem('katAnaliziRecordsV2')) || [];
+        const editId = document.getElementById('editId').value;
+
+        if (editId) {
+            const index = records.findIndex(r => r.id == editId);
+            if (index > -1) {
+                result.id = Number(editId);
+                records[index] = result;
+            }
+        } else {
+            result.id = Date.now();
+            records.unshift(result);
+        }
+
+        localStorage.setItem('katAnaliziRecordsV2', JSON.stringify(records));
+        
+        clearForm();
+        loadRecords();
+        alert("Kayıt Başarıyla İşlendi!");
+    }
+
+    // Listeyi Yükleme
+    function loadRecords() {
+        const records = JSON.parse(localStorage.getItem('katAnaliziRecordsV2')) || [];
+        const container = document.getElementById('recordsList');
+        
+        if (records.length === 0) {
+            container.innerHTML = '<p style="color: #6b7280; text-align: center;">Henüz kayıtlı analiz yok.</p>';
+            return;
+        }
+
+        let html = '';
+        records.forEach(rec => {
+            // Eğer margin 0 ise listede "Pazarlık Yok" veya 0% gösterebiliriz, şu an %0 görünecek
+            html += `
+                <div class="card record-item">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <h4 style="margin:0;">${rec.date}</h4>
+                        <span style="background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:4px; font-size:0.9rem; font-weight:bold;">
+                            ${TR_FORMAT.format(rec.unitValue)} TL/m²
+                        </span>
+                    </div>
+                    
+                    <div style="margin-top:10px; display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.9rem;">
+                        <div>
+                            <strong>İstenen:</strong> ${TR_INT.format(rec.price)} TL<br>
+                            <strong>Pazarlık:</strong> %${rec.margin}<br>
+                            <strong>Hesaplanan:</strong> ${TR_INT.format(rec.roundedPrice)} TL
+                        </div>
+                        <div>
+                            <strong>Bina Yapısı:</strong> ${rec.bCount} Bodrum, ${rec.nCount} Normal<br>
+                            <strong>Top. İnd. Alan:</strong> ${TR_FORMAT.format(rec.totalReducedArea)} m²
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px; background:#fff; padding:5px; border:1px dashed #ccc; font-size:0.85rem;">
+                        <strong>Detaylar:</strong><br>
+                        ${rec.floorDetails.map(f => `${f.name}: ${f.area}m² / ${f.ratio} = ${TR_FORMAT.format(f.reduced)}`).join('<br>')}
+                    </div>
+
+                    <div class="record-actions">
+                        <button class="btn-edit" onclick="editRecord(${rec.id})">Düzenle</button>
+                        <button class="btn-danger" onclick="deleteRecord(${rec.id})">Sil</button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // Düzenleme
+    function editRecord(id) {
+        const records = JSON.parse(localStorage.getItem('katAnaliziRecordsV2')) || [];
+        const rec = records.find(r => r.id === id);
+        if (!rec) return;
+
+        // Formu doldur
+        document.getElementById('editId').value = rec.id;
+        document.getElementById('askingPrice').value = rec.price;
+        // Eğer margin 0 ise boş bırak, değilse yaz (Kullanıcı 0 girmişse 0 yazar, boşsa boş kalır)
+        document.getElementById('bargainMargin').value = rec.margin === 0 ? '' : rec.margin;
+        
+        // Kat sayılarını geri yükle
+        document.getElementById('basementCount').value = rec.bCount || 1;
+        document.getElementById('normalCount').value = rec.nCount || 1;
+        
+        // Dropdown'ı bu sayılara göre güncelle
+        updateFloorOptions();
+
+        // Eklenmiş kat satırlarını geri yükle
+        document.getElementById('floorsContainer').innerHTML = '';
+        rec.floorDetails.forEach(f => {
+            addFloorRow(f.name, f.area, f.ratio);
+        });
+
+        document.getElementById('inputForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteRecord(id) {
+        if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
+        let records = JSON.parse(localStorage.getItem('katAnaliziRecordsV2')) || [];
+        records = records.filter(r => r.id !== id);
+        localStorage.setItem('katAnaliziRecordsV2', JSON.stringify(records));
+        loadRecords();
+    }
+
+    function clearForm() {
+        document.getElementById('editId').value = '';
+        document.getElementById('askingPrice').value = '';
+        document.getElementById('bargainMargin').value = '';
+        
+        // Varsayılanlara dön
+        document.getElementById('basementCount').value = '1';
+        document.getElementById('normalCount').value = '1';
+        updateFloorOptions(); // Dropdown'ı resetle
+
+        document.getElementById('floorSelector').value = '';
+        document.getElementById('floorsContainer').innerHTML = '';
+        document.getElementById('calculationResult').style.display = 'none';
+    }
+
+</script>
+
+</body>
+</html>
