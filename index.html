@@ -24,15 +24,9 @@
             line-height: 1.5;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .container { max-width: 900px; margin: 0 auto; }
 
-        h1, h2, h3 {
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
+        h1, h2, h3 { color: var(--secondary); margin-bottom: 15px; }
 
         .card {
             background: var(--card-bg);
@@ -59,20 +53,10 @@
             box-sizing: border-box;
         }
 
-        input:focus {
-            outline: 2px solid var(--primary);
-            border-color: transparent;
-        }
+        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
 
-        .row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .col {
-            flex: 1;
-            min-width: 200px;
-        }
+        .row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .col { flex: 1; min-width: 200px; }
 
         button {
             cursor: pointer;
@@ -84,33 +68,11 @@
         }
         button:hover { opacity: 0.9; }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            width: 100%;
-            font-size: 1.1rem;
-        }
-        .btn-secondary {
-            background-color: #64748b;
-            color: white;
-        }
-        .btn-danger {
-            background-color: var(--danger);
-            color: white;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-        .btn-edit {
-            background-color: var(--primary);
-            color: white;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-        }
-        .btn-warning {
-            background-color: #ef4444;
-            color: white;
-        }
+        .btn-primary { background-color: var(--primary); color: white; width: 100%; font-size: 1.1rem; }
+        .btn-secondary { background-color: #64748b; color: white; }
+        .btn-danger { background-color: var(--danger); color: white; padding: 5px 10px; font-size: 0.8rem; }
+        .btn-edit { background-color: var(--primary); color: white; padding: 5px 10px; font-size: 0.8rem; margin-right: 5px; }
+        .btn-warning { background-color: #ef4444; color: white; }
 
         .floor-row {
             display: grid;
@@ -158,24 +120,11 @@
             position: relative;
         }
 
-        .record-actions {
-            margin-top: 10px;
-            text-align: right;
-        }
+        .record-actions { margin-top: 10px; text-align: right; }
 
-        .divider {
-            border: 0;
-            border-top: 1px solid #e5e7eb;
-            margin: 20px 0;
-        }
+        .divider { border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0; }
 
-        /* Üst sekmeler */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .tab-btn {
             flex: 1;
             background: #e5e7eb;
@@ -185,21 +134,11 @@
             padding: 12px 10px;
             font-weight: 800;
         }
-        .tab-btn.active {
-            background: #dbeafe;
-            color: #1e40af;
-            border-color: #bfdbfe;
-        }
+        .tab-btn.active { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        /* Dubleks alt sekmeler */
-        .subtabs {
-            display:flex;
-            gap:10px;
-            flex-wrap:wrap;
-            margin-bottom: 10px;
-        }
+        .subtabs { display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 10px; }
         .subtab-btn {
             flex:1;
             background:#f3f4f6;
@@ -209,15 +148,10 @@
             font-weight:900;
             color:#111827;
         }
-        .subtab-btn.active {
-            background:#dbeafe;
-            border-color:#bfdbfe;
-            color:#1e40af;
-        }
+        .subtab-btn.active { background:#dbeafe; border-color:#bfdbfe; color:#1e40af; }
         .subtab-panel { display:none; }
         .subtab-panel.active { display:block; }
 
-        /* Dubleks özet */
         .dubleks-summary {
             background: #fff;
             border: 1px solid #e5e7eb;
@@ -250,7 +184,6 @@
 <div class="container">
     <h1>🏗️ Kat Analizi Programı</h1>
 
-    <!-- ÜST SEKME BUTONLARI -->
     <div class="tabs card" style="padding:12px;">
         <button type="button" class="tab-btn active" id="tabKatAnaliziBtn">Kat Analizi</button>
         <button type="button" class="tab-btn" id="tabDubleksBtn">Dubleks Analiz</button>
@@ -320,7 +253,7 @@
 
                 <div id="floorsContainer"></div>
 
-                <!-- ✅ Kat Analizi: CANLI HESAP (YENİ) -->
+                <!-- Kat Analizi: CANLI HESAP -->
                 <div id="katLiveCalc" class="result-box" style="display:block;">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
                         <div>
@@ -498,15 +431,9 @@
                 </div>
 
                 <div class="dubleks-summary" id="dubleksLiveSummary">
-                    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-                        <div>
-                            <span class="pill">Canlı Hesaplama Özeti</span>
-                            <div class="mini" style="margin-top:6px;">Yasal ve Mevcut alanlar otomatik hesaplanır.</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div class="mini">Genel Toplam (Yasal + Mevcut)</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:#111827;" id="dubleksGrandTotalText">0 TL</div>
-                        </div>
+                    <div>
+                        <span class="pill">Canlı Hesaplama Özeti</span>
+                        <div class="mini" style="margin-top:6px;">Yasal ve Mevcut alanlar otomatik hesaplanır.</div>
                     </div>
 
                     <hr class="divider" style="margin:12px 0;">
@@ -518,7 +445,6 @@
                                 <span class="pill" id="yasalTotalText">0 TL</span>
                             </div>
 
-                            <!-- ✅ Dubleks: CANLI TOPLAM ALAN (YENİ) -->
                             <div class="mini" style="margin-top:8px;">
                                 <strong>Toplam Alan (Normal + Çatı):</strong> <span id="yasalTotalAreaText">0 m²</span>
                             </div>
@@ -528,6 +454,14 @@
                                 Çatı: <strong id="yasalRoofCalcText">0 TL</strong><br>
                                 Teras: <strong id="yasalTerasCalcText">0 TL</strong>
                             </div>
+
+                            <!-- ✅ İstenen: Birim Değer hesaplarını göster -->
+                            <div class="mini" style="margin-top:10px; border-top:1px dashed #e5e7eb; padding-top:10px;">
+                                <strong>Birim Değer (TL/m²)</strong><br>
+                                Normal: <strong id="yasalNormalUnitText">0 TL/m²</strong><br>
+                                Çatı: <strong id="yasalRoofUnitText">0 TL/m²</strong><br>
+                                Teras: <strong id="yasalTerasUnitText">0 TL/m²</strong>
+                            </div>
                         </div>
 
                         <div style="border:1px dashed #d1d5db; border-radius:10px; padding:10px;">
@@ -536,7 +470,6 @@
                                 <span class="pill" id="mevcutTotalText">0 TL</span>
                             </div>
 
-                            <!-- ✅ Dubleks: CANLI TOPLAM ALAN (YENİ) -->
                             <div class="mini" style="margin-top:8px;">
                                 <strong>Toplam Alan (Normal + Çatı):</strong> <span id="mevcutTotalAreaText">0 m²</span>
                             </div>
@@ -545,6 +478,14 @@
                                 Normal: <strong id="mevcutNormalCalcText">0 TL</strong><br>
                                 Çatı: <strong id="mevcutRoofCalcText">0 TL</strong><br>
                                 Teras: <strong id="mevcutTerasCalcText">0 TL</strong>
+                            </div>
+
+                            <!-- ✅ İstenen: Birim Değer hesaplarını göster -->
+                            <div class="mini" style="margin-top:10px; border-top:1px dashed #e5e7eb; padding-top:10px;">
+                                <strong>Birim Değer (TL/m²)</strong><br>
+                                Normal: <strong id="mevcutNormalUnitText">0 TL/m²</strong><br>
+                                Çatı: <strong id="mevcutRoofUnitText">0 TL/m²</strong><br>
+                                Teras: <strong id="mevcutTerasUnitText">0 TL/m²</strong>
                             </div>
                         </div>
                     </div>
@@ -569,15 +510,11 @@
 </div>
 
 <script>
-    // Global sabitler
     const TR_FORMAT = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const TR_INT = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 });
     const STORAGE_KEY = 'katAnaliziRecordsV2';
-
-    // Dubleks storage
     const DUBLEKS_STORAGE_KEY = 'dubleksAnalizRecordsV1';
 
-    // Ortak fiyat yuvarlama fonksiyonu
     function getRoundedPrice(price, marginInput) {
         let roundedPrice = price;
         let margin = 0;
@@ -591,7 +528,6 @@
         return { roundedPrice, margin };
     }
 
-    // Mesaj gösterme fonksiyonu (alert yerine)
     function showMessage(message, type = 'info') {
         const box = document.getElementById('messageBox');
         box.textContent = message;
@@ -616,7 +552,6 @@
         box.style.display = 'none';
     }
 
-    // Dubleks mesaj kutusu
     function showDubleksMessage(message, type = 'info') {
         const box = document.getElementById('dubleksMessageBox');
         box.textContent = message;
@@ -641,43 +576,32 @@
         box.style.display = 'none';
     }
 
-    // Anlık Fiyat Hesaplama
     function calculateInstantPrice() {
         const price = parseFloat(document.getElementById('askingPrice').value);
         const marginInput = document.getElementById('bargainMargin').value;
         const displayDiv = document.getElementById('instantPriceDisplay');
 
-        if (isNaN(price)) {
-            displayDiv.style.display = 'none';
-            return;
-        }
+        if (isNaN(price)) { displayDiv.style.display = 'none'; return; }
 
         const { roundedPrice } = getRoundedPrice(price, marginInput);
-
         displayDiv.innerHTML = `Hesaplanan Değer (Yuvarlanmış): ${TR_INT.format(roundedPrice)} TL`;
         displayDiv.style.display = 'block';
     }
 
-    // ✅ Kat Analizi: CANLI HESAP (YENİ)
     function katRecalcLive() {
         const price = parseFloat(document.getElementById('askingPrice').value);
         const marginInput = document.getElementById('bargainMargin').value;
 
         let roundedPrice = 0;
-        if (!isNaN(price)) {
-            roundedPrice = getRoundedPrice(price, marginInput).roundedPrice;
-        }
+        if (!isNaN(price)) roundedPrice = getRoundedPrice(price, marginInput).roundedPrice;
 
         const rows = document.querySelectorAll('.floor-row');
         let totalReducedArea = 0;
 
-        // Eksik satırları kırmadan (0 sayarak) canlı hesap
         for (const row of rows) {
             const area = parseFloat(row.querySelector('.floor-area')?.value);
             const ratio = parseFloat(row.querySelector('.floor-ratio')?.value);
-            if (!isNaN(area) && !isNaN(ratio) && ratio > 0) {
-                totalReducedArea += (area / ratio);
-            }
+            if (!isNaN(area) && !isNaN(ratio) && ratio > 0) totalReducedArea += (area / ratio);
         }
 
         const unitValue = (roundedPrice > 0 && totalReducedArea > 0) ? (roundedPrice / totalReducedArea) : 0;
@@ -687,7 +611,6 @@
         document.getElementById('katLiveUnitValue').textContent = `${TR_FORMAT.format(unitValue)} TL/m²`;
     }
 
-    // Kat Seçeneklerini Dinamik Güncelleme
     function updateFloorOptions() {
         const basementCount = parseInt(document.getElementById('basementCount').value) || 0;
         const normalCount = parseInt(document.getElementById('normalCount').value) || 1;
@@ -717,15 +640,11 @@
         selector.add(new Option("Çatı Kat", "Çatı Kat"));
     }
 
-    // Listeye yeni kat satırı ekleme
     function addFloorRow(floorName = null, area = '', ratio = '') {
         const selector = document.getElementById('floorSelector');
         const selectedFloor = floorName || selector.value;
 
-        if (!selectedFloor) {
-            showMessage("Lütfen önce listeden bir kat seçiniz.", 'error');
-            return;
-        }
+        if (!selectedFloor) { showMessage("Lütfen önce listeden bir kat seçiniz.", 'error'); return; }
 
         const container = document.getElementById('floorsContainer');
         const rowId = Date.now() + Math.random();
@@ -752,20 +671,15 @@
 
         container.appendChild(div);
         if (!floorName) selector.value = "";
-
-        // ✅ canlı güncelle
         katRecalcLive();
     }
 
     function removeFloorRow(id) {
         const row = document.getElementById(`row-${id}`);
         if (row) row.remove();
-
-        // ✅ canlı güncelle
         katRecalcLive();
     }
 
-    // Hesaplama (Kaydet butonu için)
     function performCalculation() {
         hideMessage();
 
@@ -774,18 +688,12 @@
         const bCount = document.getElementById('basementCount').value;
         const nCount = document.getElementById('normalCount').value;
 
-        if (isNaN(price)) {
-            showMessage("Lütfen İstenilen Fiyat bilgisini giriniz.", 'error');
-            return null;
-        }
+        if (isNaN(price)) { showMessage("Lütfen İstenilen Fiyat bilgisini giriniz.", 'error'); return null; }
 
         const { roundedPrice, margin } = getRoundedPrice(price, marginInput);
 
         const rows = document.querySelectorAll('.floor-row');
-        if (rows.length === 0) {
-            showMessage("Lütfen en az bir kat ekleyiniz.", 'error');
-            return null;
-        }
+        if (rows.length === 0) { showMessage("Lütfen en az bir kat ekleyiniz.", 'error'); return null; }
 
         let totalReducedArea = 0;
         const floorDetails = [];
@@ -803,31 +711,19 @@
             const reducedArea = area / ratio;
             totalReducedArea += reducedArea;
 
-            floorDetails.push({
-                name: name,
-                area: area,
-                ratio: ratio,
-                reduced: reducedArea
-            });
+            floorDetails.push({ name, area, ratio, reduced: reducedArea });
         }
 
         let unitValue = 0;
         if (totalReducedArea > 0) unitValue = roundedPrice / totalReducedArea;
 
         return {
-            price,
-            margin,
-            bCount,
-            nCount,
-            roundedPrice,
-            floorDetails,
-            totalReducedArea,
-            unitValue,
+            price, margin, bCount, nCount,
+            roundedPrice, floorDetails, totalReducedArea, unitValue,
             date: new Date().toLocaleString('tr-TR')
         };
     }
 
-    // Kaydetme
     function saveRecord() {
         const result = performCalculation();
         if (!result) return;
@@ -837,10 +733,7 @@
 
         if (editId) {
             const index = records.findIndex(r => r.id == editId);
-            if (index > -1) {
-                result.id = Number(editId);
-                records[index] = result;
-            }
+            if (index > -1) { result.id = Number(editId); records[index] = result; }
         } else {
             result.id = Date.now();
             records.unshift(result);
@@ -853,7 +746,6 @@
         showMessage("Kayıt başarıyla işlendi!", 'success');
     }
 
-    // Listeyi Yükleme
     function loadRecords() {
         const records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
         const container = document.getElementById('recordsList');
@@ -901,7 +793,6 @@
         container.innerHTML = html;
     }
 
-    // Düzenleme
     function editRecord(id) {
         hideMessage();
 
@@ -927,8 +818,6 @@
         if (title) title.textContent = 'Analiz Düzenle';
 
         document.getElementById('inputForm').scrollIntoView({ behavior: 'smooth' });
-
-        // ✅ canlı güncelle
         katRecalcLive();
     }
 
@@ -961,17 +850,11 @@
         const title = document.querySelector('#inputForm h3');
         if (title) title.textContent = 'Yeni Analiz Oluştur';
 
-        // ✅ canlı güncelle
         katRecalcLive();
     }
 
-    // -----------------------------
-    // DUBLEKS ANALİZ
-    // -----------------------------
-    function numOrZero(v) {
-        const n = parseFloat(v);
-        return isNaN(n) ? 0 : n;
-    }
+    // DUBLEKS
+    function numOrZero(v) { const n = parseFloat(v); return isNaN(n) ? 0 : n; }
 
     function getDubleksInputs() {
         return {
@@ -996,15 +879,11 @@
 
     function calcSection(sec) {
         const normalCalc = sec.normalArea * sec.unitValue;
-
         const roofEffUnit  = sec.unitValue * (sec.roofRatio / 100);
         const roofCalc     = sec.roofArea * roofEffUnit;
-
         const terasEffUnit = sec.unitValue * (sec.terasRatio / 100);
         const terasCalc    = sec.terasArea * terasEffUnit;
-
         const total = normalCalc + roofCalc + terasCalc;
-
         return { normalCalc, roofCalc, terasCalc, total };
     }
 
@@ -1024,19 +903,30 @@
         document.getElementById('mevcutTerasCalcText').textContent  = `${TR_INT.format(m.terasCalc)} TL`;
         document.getElementById('mevcutTotalText').textContent      = `${TR_INT.format(m.total)} TL`;
 
-        const grand = y.total + m.total;
-        document.getElementById('dubleksGrandTotalText').textContent = `${TR_INT.format(grand)} TL`;
-
-        // ✅ İstenen: Toplam Alan = Normal + Çatı (Canlı)
         const yArea = yasal.normalArea + yasal.roofArea;
         const mArea = mevcut.normalArea + mevcut.roofArea;
         document.getElementById('yasalTotalAreaText').textContent = `${TR_FORMAT.format(yArea)} m²`;
         document.getElementById('mevcutTotalAreaText').textContent = `${TR_FORMAT.format(mArea)} m²`;
+
+        // ✅ İstenen: Birim Değer = (Kat Değeri / Kat Alanı) (0 alan ise 0)
+        const yNormalUnit = (yasal.normalArea > 0) ? (y.normalCalc / yasal.normalArea) : 0;
+        const yRoofUnit   = (yasal.roofArea > 0)   ? (y.roofCalc   / yasal.roofArea)   : 0;
+        const yTerasUnit  = (yasal.terasArea > 0)  ? (y.terasCalc  / yasal.terasArea)  : 0;
+
+        const mNormalUnit = (mevcut.normalArea > 0) ? (m.normalCalc / mevcut.normalArea) : 0;
+        const mRoofUnit   = (mevcut.roofArea > 0)   ? (m.roofCalc   / mevcut.roofArea)   : 0;
+        const mTerasUnit  = (mevcut.terasArea > 0)  ? (m.terasCalc  / mevcut.terasArea)  : 0;
+
+        document.getElementById('yasalNormalUnitText').textContent = `${TR_FORMAT.format(yNormalUnit)} TL/m²`;
+        document.getElementById('yasalRoofUnitText').textContent   = `${TR_FORMAT.format(yRoofUnit)} TL/m²`;
+        document.getElementById('yasalTerasUnitText').textContent  = `${TR_FORMAT.format(yTerasUnit)} TL/m²`;
+
+        document.getElementById('mevcutNormalUnitText').textContent = `${TR_FORMAT.format(mNormalUnit)} TL/m²`;
+        document.getElementById('mevcutRoofUnitText').textContent   = `${TR_FORMAT.format(mRoofUnit)} TL/m²`;
+        document.getElementById('mevcutTerasUnitText').textContent  = `${TR_FORMAT.format(mTerasUnit)} TL/m²`;
     }
 
-    // -----------------------------
-    // Dubleks kayıt/okuma fonksiyonları (DEĞİŞMEDİ)
-    // -----------------------------
+    // Dubleks kayıt fonksiyonları (değişmedi)
     function normalizeDubleksRecord(rec) {
         if (rec && rec.yasal && rec.mevcut) {
             rec.yasal.terasArea = rec.yasal.terasArea ?? 0;
@@ -1093,10 +983,7 @@
             document.getElementById('mevcutTerasArea').value !== '' ||
             document.getElementById('mevcutTerasRatio').value !== '';
 
-        if (!anyFilled) {
-            showDubleksMessage("Lütfen en az bir alan giriniz.", "error");
-            return null;
-        }
+        if (!anyFilled) { showDubleksMessage("Lütfen en az bir alan giriniz.", "error"); return null; }
 
         const { yasal, mevcut } = getDubleksInputs();
 
@@ -1137,10 +1024,7 @@
 
         if (editId) {
             const idx = records.findIndex(r => r.id == editId);
-            if (idx > -1) {
-                result.id = Number(editId);
-                records[idx] = result;
-            }
+            if (idx > -1) { result.id = Number(editId); records[idx] = result; }
         } else {
             result.id = Date.now();
             records.unshift(result);
@@ -1270,9 +1154,6 @@
         dubleksRecalcLive();
     }
 
-    // -----------------------------
-    // SEKME KONTROLÜ
-    // -----------------------------
     function setActiveTab(which) {
         const btn1 = document.getElementById('tabKatAnaliziBtn');
         const btn2 = document.getElementById('tabDubleksBtn');
@@ -1303,9 +1184,7 @@
         }
     }
 
-    // Sayfa yüklendiğinde
     document.addEventListener('DOMContentLoaded', () => {
-        // Kat Analizi init
         updateFloorOptions();
         loadRecords();
 
@@ -1317,18 +1196,13 @@
         const clearFormBtn = document.getElementById('clearFormBtn');
         const form = document.getElementById('analysisForm');
 
-        if (askingPriceInput) {
-            askingPriceInput.addEventListener('input', () => { calculateInstantPrice(); katRecalcLive(); });
-        }
-        if (bargainMarginInput) {
-            bargainMarginInput.addEventListener('input', () => { calculateInstantPrice(); katRecalcLive(); });
-        }
+        if (askingPriceInput) askingPriceInput.addEventListener('input', () => { calculateInstantPrice(); katRecalcLive(); });
+        if (bargainMarginInput) bargainMarginInput.addEventListener('input', () => { calculateInstantPrice(); katRecalcLive(); });
         if (basementCountInput) basementCountInput.addEventListener('input', updateFloorOptions);
         if (normalCountInput) normalCountInput.addEventListener('input', updateFloorOptions);
         if (addFloorBtn) addFloorBtn.addEventListener('click', () => addFloorRow());
         if (clearFormBtn) clearFormBtn.addEventListener('click', clearForm);
 
-        // ✅ floor satırlarında input değişince canlı hesap güncelle (delegation)
         const floorsContainer = document.getElementById('floorsContainer');
         if (floorsContainer) {
             floorsContainer.addEventListener('input', (e) => {
@@ -1338,17 +1212,10 @@
             });
         }
 
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                saveRecord();
-            });
-        }
+        if (form) form.addEventListener('submit', (e) => { e.preventDefault(); saveRecord(); });
 
-        // ✅ Kat Analizi canlı hesap ilk çizim
         katRecalcLive();
 
-        // Dubleks init
         dubleksLoadRecords();
         dubleksRecalcLive();
 
@@ -1356,25 +1223,16 @@
             'yasalNormalArea','yasalUnitValue','yasalRoofArea','yasalRoofRatio','yasalTerasArea','yasalTerasRatio',
             'mevcutNormalArea','mevcutUnitValue','mevcutRoofArea','mevcutRoofRatio','mevcutTerasArea','mevcutTerasRatio'
         ].map(id => document.getElementById(id));
-
         dInputs.forEach(inp => { if (inp) inp.addEventListener('input', dubleksRecalcLive); });
 
         const dForm = document.getElementById('dubleksForm');
         const dClear = document.getElementById('dubleksClearBtn');
-
         if (dClear) dClear.addEventListener('click', dubleksClearForm);
-        if (dForm) {
-            dForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                dubleksSave();
-            });
-        }
+        if (dForm) dForm.addEventListener('submit', (e) => { e.preventDefault(); dubleksSave(); });
 
-        // Üst sekmeler
         document.getElementById('tabKatAnaliziBtn').addEventListener('click', () => setActiveTab('kat'));
         document.getElementById('tabDubleksBtn').addEventListener('click', () => setActiveTab('dubleks'));
 
-        // Dubleks alt sekmeler
         document.getElementById('subtabYasalBtn').addEventListener('click', () => setDubleksSubtab('yasal'));
         document.getElementById('subtabMevcutBtn').addEventListener('click', () => setDubleksSubtab('mevcut'));
     });
